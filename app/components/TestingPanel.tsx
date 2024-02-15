@@ -21,15 +21,15 @@ const TestingLogo = () => (
 export const TestingPanel = ({ className }: { className: string }) => {
   return (
     <div
-      className={`${className} flex rounded border border-focus ${
-        TEST_MODE ? "" : "shadow-[0_0_15px_rgb(var(--color-focus)/.75)]"
+      className={`${className} flex rounded border border-customization-background-1 ${
+        TEST_MODE ? "" : "shadow-[0_0_15px_rgb(var(--color-customization-background-1)/.75)]"
       }`}
     >
-      <div className="flex shrink flex-col items-center justify-center border-r border-focus bg-gradient-to-b from-transparent to-focus/[.4] p-6">
+      <div className="flex shrink flex-col items-center justify-center border-r border-customization-background-1 bg-gradient-to-b from-transparent to-customization-background-1/[.4] p-6">
         <TestingLogo />
         <span className="mt-1 text-3xl leading-none">Testing</span>
       </div>
-      <div className="relative flex w-full flex-col justify-center gap-2 bg-gradient-to-b from-transparent to-focus/[.26] p-6">
+      <div className="relative flex w-full flex-col justify-center gap-2 bg-gradient-to-b from-transparent to-customization-background-1/[.26] p-6">
         <div className="text-center text-xl">
           Test Mode:{" "}
           <span className={`font-extrabold ${TEST_MODE ? "text-foreground-5" : "text-background-3"}`}>
@@ -49,7 +49,7 @@ export const TestingPanel = ({ className }: { className: string }) => {
         <div className="grow" />
         <Button
           variant="custom"
-          className={`rounded-s mr-2 mt-2 w-fit self-end bg-focus hover:bg-focus/75 enabled:hover:text-color-1 disabled:bg-focus disabled:brightness-100`}
+          className={`rounded-s mr-2 mt-2 w-fit self-end bg-customization-background-1 hover:bg-customization-background-1/75 hover:text-color-1`}
           onClick={toggleTestMode}
         >
           {TEST_MODE ? "Disable" : "Enable"} Test Mode

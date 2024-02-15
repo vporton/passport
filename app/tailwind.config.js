@@ -33,6 +33,10 @@ module.exports = {
         "color-4": "rgb(var(--color-text-4) / <alpha-value>)",
         "color-5": "rgb(var(--color-text-5) / <alpha-value>)",
 
+        // Set this variable dynamically to allow for customization
+        // colors defined by an API call
+        "customization-background-1": "rgb(var(--color-customization-background-1) / <alpha-value>)",
+
         // Temporary, to be removed
         accent: "#000",
         "accent-2": "#000",

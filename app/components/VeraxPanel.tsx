@@ -11,8 +11,14 @@ import { useContext, useState } from "react";
 
 const VeraxLogo = () => (
   <svg width="64" height="56" viewBox="0 0 64 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.1082 0H0L15.8409 37.0131L24.395 17.7418L17.1082 0Z" fill="rgb(var(--color-foreground-7))" />
-    <path d="M46.5404 0H63.0907L40.7172 55.5197H23.5539L46.5404 0Z" fill="rgb(var(--color-foreground-7))" />
+    <path
+      d="M17.1082 0H0L15.8409 37.0131L24.395 17.7418L17.1082 0Z"
+      fill="rgb(var(--color-customization-background-1))"
+    />
+    <path
+      d="M46.5404 0H63.0907L40.7172 55.5197H23.5539L46.5404 0Z"
+      fill="rgb(var(--color-customization-background-1))"
+    />
   </svg>
 );
 
@@ -32,6 +38,31 @@ const getButtonMsg = (onChainStatus: OnChainStatus): string => {
 const LINEA_CHAIN_NAME = process.env.NEXT_PUBLIC_ENABLE_TESTNET === "on" ? "Linea Goerli" : "Linea";
 const chain = chains.find(({ label }) => label === LINEA_CHAIN_NAME);
 
+const LinkActionButton = ({ text, href }: { text: string; href: string }) => {};
+
+type CustomDashboardPanelProps = {
+  logo: {
+    image: React.ReactNode;
+    caption: string;
+  };
+  children: React.ReactNode;
+  className: string;
+};
+
+export const CustomDashboardPanel = ({ logo, className, children }: CustomDashboardPanelProps) => {
+  return (
+    <div className={`${className} flex rounded border border-customization-background-1`}>
+      <div className="flex shrink flex-col items-center justify-center border-r border-customization-background-1 bg-gradient-to-b from-transparent to-customization-background-1/[.4] p-6">
+        {logo.image}
+        <span className="mt-1 text-3xl leading-none">{logo.caption}</span>
+      </div>
+      <div className="relative flex flex-col justify-start gap-2 bg-gradient-to-b from-transparent to-customization-background-1/[.26] p-6 w-full items-center">
+        {children}
+      </div>
+    </div>
+  );
+};
+
 export const VeraxPanel = ({ className }: { className: string }) => {
   const onChainStatus = useOnChainStatus({ chain });
   const { score } = useContext(ScorerContext);
@@ -50,62 +81,59 @@ export const VeraxPanel = ({ className }: { className: string }) => {
 
   return (
     <>
-      <div
-        className={`${className} flex rounded border border-foreground-7 ${
-          onChainStatus === OnChainStatus.MOVED_UP_TO_DATE ? "text-foreground-7 brightness-50 saturate-50" : ""
+      <CustomDashboardPanel
+        className={`${className} ${
+          onChainStatus === OnChainStatus.MOVED_UP_TO_DATE
+            ? "text-customization-background-1 brightness-50 saturate-50"
+            : ""
         } ${
           onChainStatus === OnChainStatus.MOVED_OUT_OF_DATE
-            ? "shadow-[0_0_15px_rgb(var(--color-foreground-7)/.75)]"
+            ? "shadow-[0_0_15px_rgb(var(--color-customization-background-1)/.75)]"
             : ""
         }`}
+        logo={{ image: <VeraxLogo />, caption: "Verax" }}
       >
-        <div className="flex shrink flex-col items-center justify-center border-r border-foreground-7 bg-gradient-to-b from-transparent to-foreground-7/[.4] p-6">
-          <VeraxLogo />
-          <span className="mt-1 text-3xl leading-none">Verax</span>
-        </div>
-        <div className="relative flex flex-col justify-start gap-2 bg-gradient-to-b from-transparent to-foreground-7/[.26] p-6">
-          <Tooltip
-            className={`absolute top-0 right-0 p-2 ${
-              needToSwitchChain && onChainStatus !== OnChainStatus.MOVED_UP_TO_DATE ? "block" : "hidden"
-            }`}
-            panelClassName="w-[200px] border-foreground-7"
-            iconClassName="text-foreground-7"
-          >
-            You will be prompted to switch to {chain?.label} and sign the transaction.
-          </Tooltip>
-          {onChainStatus === OnChainStatus.NOT_MOVED || onChainStatus === OnChainStatus.MOVED_OUT_OF_DATE ? (
-            <>
-              Verax is a community maintained public attestation registry on Linea. Push your Passport Stamps onto Verax
-              to gain rewards for early adopters in the Linea ecosystem.
-              <span className="text-xs text-foreground-7 brightness-[1.4]">
-                This action requires ETH bridged to Linea Mainnet to cover network fees, as well as a $2 mint fee which
-                goes to the Gitcoin treasury.
-              </span>
-            </>
-          ) : (
-            <p>
-              Verax is a community maintained public attestation registry on Linea. Push your Passport Stamps onto Verax
-              to gain rewards for early adopters in the Linea ecosystem.
-            </p>
-          )}
-          <div className="grow" />
-          <LoadButton
-            {...buttonProps}
-            isLoading={syncingToChain || onChainStatus === OnChainStatus.LOADING}
-            variant="custom"
-            className={`${buttonProps.className} rounded-s mr-2 mt-2 w-fit  self-end bg-foreground-7 text-color-4 hover:bg-foreground-7/75 enabled:hover:text-color-1 disabled:bg-foreground-7 disabled:brightness-100`}
-            onClick={() => {
-              if (score < 1) {
-                setConfirmModalOpen(true);
-              } else {
-                buttonProps.onClick();
-              }
-            }}
-          >
-            {text}
-          </LoadButton>
-        </div>
-      </div>
+        <Tooltip
+          className={`absolute top-0 right-0 p-2 ${
+            needToSwitchChain && onChainStatus !== OnChainStatus.MOVED_UP_TO_DATE ? "block" : "hidden"
+          }`}
+          panelClassName="w-[200px] border-customization-background-1"
+          iconClassName="text-customization-background-1"
+        >
+          You will be prompted to switch to {chain?.label} and sign the transaction.
+        </Tooltip>
+        {onChainStatus === OnChainStatus.NOT_MOVED || onChainStatus === OnChainStatus.MOVED_OUT_OF_DATE ? (
+          <>
+            Verax is a community maintained public attestation registry on Linea. Push your Passport Stamps onto Verax
+            to gain rewards for early adopters in the Linea ecosystem.
+            <span className="text-xs text-customization-background-1 brightness-[1.4]">
+              This action requires ETH bridged to Linea Mainnet to cover network fees, as well as a $2 mint fee which
+              goes to the Gitcoin treasury.
+            </span>
+          </>
+        ) : (
+          <p>
+            Verax is a community maintained public attestation registry on Linea. Push your Passport Stamps onto Verax
+            to gain rewards for early adopters in the Linea ecosystem.
+          </p>
+        )}
+        <div className="grow" />
+        <LoadButton
+          {...buttonProps}
+          isLoading={syncingToChain || onChainStatus === OnChainStatus.LOADING}
+          variant="custom"
+          className={`${buttonProps.className} rounded-s mr-2 mt-2 w-fit  self-end bg-customization-background-1 text-color-4 hover:bg-customization-background-1/75 enabled:hover:text-color-1 disabled:bg-customization-background-1 disabled:brightness-100`}
+          onClick={() => {
+            if (score < 1) {
+              setConfirmModalOpen(true);
+            } else {
+              buttonProps.onClick();
+            }
+          }}
+        >
+          {text}
+        </LoadButton>
+      </CustomDashboardPanel>
       <VeraxPanelApprovalModal
         isOpen={confirmModalOpen}
         onReject={() => setConfirmModalOpen(false)}
