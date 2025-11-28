@@ -32,7 +32,7 @@
     "dotenv": "^16.0.0",
     "ethers": "^5.0.32",
     "express": "4",
-    "google-auth-library": "^7.14.1",
+    "google-auth-library": "^9.0.0",
     "luxon": "^2.4.0",
     "moralis": "^2.24.2",
     "tslint": "^6.1.3",
